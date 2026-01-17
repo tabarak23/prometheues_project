@@ -1,0 +1,15 @@
+groups:
+- name: HighCPUUtilsation
+  labels:
+    team: monitoring
+  rules:
+  # Alert for any instance that is unreachable for >5 minutes.
+  - alert: HighCPUUtilsation
+    expr: 100 - avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])*100) > 0.1
+    keep_firing_for: 5m 
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Instance HighCPUUtilsation"
+      description: "{{ $labels.instance_id }} HighCPUUtilsation"

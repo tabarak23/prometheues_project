@@ -1,0 +1,15 @@
+groups:
+- name: InstanceDown
+  labels:
+    team: monitoring
+  rules:
+  # Alert for any instance that is unreachable for >5 minutes.
+  - alert: InstanceDown
+    expr: up < 1
+    keep_firing_for: 5m
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Instance {{ $labels.instance_id }} down"
+      description: "{{ $labels.instance_id }} is down for more than 1 minute"
